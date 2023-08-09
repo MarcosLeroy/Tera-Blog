@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import user1 from "../../images/placeholders/user-1.jpg";
 import post1 from "../../images/placeholders/post-1.jpg";
@@ -7,6 +7,30 @@ import post3 from "../../images/placeholders/post-3.jpg";
 import Default from "../templates/Default";
 
 export default function UserBlog() {
+  const [user, setUser] = useState({});
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const getAPIData = async () => {
+      const [userResponse, postsResponse] = await Promise.all([
+        fetch("https://63cf09718a780ae6e6710dbe.mockapi.io/users/3").then(
+          (response) => response.json()
+        ),
+        fetch("https://63cf09718a780ae6e6710dbe.mockapi.io/users/3/posts").then(
+          (response) => response.json()
+        ),
+      ]);
+
+      setUser(userResponse);
+      setPosts(postsResponse);
+    };
+
+    getAPIData();
+  }, []);
+
+  console.log("user", user);
+  console.log("posts", posts);
+
   return (
     <Default>
       <div className="user-blog">
